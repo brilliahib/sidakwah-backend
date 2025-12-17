@@ -23,6 +23,10 @@ class ModulController extends Controller
     {
         $moduls = Modul::latest()->limit(5)->get();
 
+        if ($moduls->isEmpty()) {
+            return $this->error('No modules found', 404);
+        }
+
         return $this->success($moduls, 'Latest modules retrieved successfully');
     }
 
@@ -37,6 +41,10 @@ class ModulController extends Controller
     public function index()
     {
         $modules = Modul::all();
+
+        if ($modules->isEmpty()) {
+            return $this->error('No modules found', 404);
+        }
 
         return $this->success($modules, 'Modules retrieved successfully');
     }

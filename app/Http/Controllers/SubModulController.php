@@ -14,6 +14,10 @@ class SubModulController extends Controller
     {
         $subModuls = SubModul::all();
 
+        if ($subModuls->isEmpty()) {
+            return $this->error('No sub-modules found', 404);
+        }
+
         return $this->success($subModuls, 'Sub-modules retrieved successfully');
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MaterialContentController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubModulController;
 use Illuminate\Http\Request;
@@ -31,6 +32,13 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [SubModulController::class, 'show']);
     });
 
+    // Material content routes
+    Route::prefix('material-contents')->group(function () {
+        Route::get('/latest', [MaterialContentController::class, 'getLatestMaterials']);
+        Route::get('/sub-modul/{subModulId}', [MaterialContentController::class, 'getBySubModul']);
+        Route::get('/{id}', [MaterialContentController::class, 'show']);
+    });
+
     Route::middleware('role:admin')->group(function () {
         // Module routes for admin
         Route::prefix('modules')->group(function () {
@@ -45,6 +53,14 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/', [SubModulController::class, 'store']);
             Route::put('/{id}', [SubModulController::class, 'update']);
             Route::delete('/{id}', [SubModulController::class, 'destroy']);
+        });
+
+        // Material content routes for admin
+        Route::prefix('material-contents')->group(function () {
+            Route::get('/', [MaterialContentController::class, 'index']);
+            Route::post('/', [MaterialContentController::class, 'store']);
+            Route::put('/{id}', [MaterialContentController::class, 'update']);
+            Route::delete('/{id}', [MaterialContentController::class, 'destroy']);
         });
     });
 });
