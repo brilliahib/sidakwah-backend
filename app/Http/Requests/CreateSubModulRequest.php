@@ -24,7 +24,16 @@ class CreateSubModulRequest extends FormRequest
         return [
             'modul_id' => 'required|exists:moduls,id',
             'title' => 'required|string|max:255',
-            'content' => 'nullable|string',
+            'description' => 'nullable|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'modul_id.required' => 'Modul must be selected',
+            'modul_id.exists' => 'Selected module not found',
+            'title.required' => 'Sub-module title is required',
         ];
     }
 }
