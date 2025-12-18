@@ -13,18 +13,30 @@ class MaterialContentController extends Controller
 {
     public function getLatestMaterials(): JsonResponse
     {
-        $materials = MaterialContent::latest()->limit(5)->get();
+        $materials = MaterialContent::with([
+            'subModul:id,title,modul_id',
+            'subModul.modul:id,title',
+        ])
+            ->latest()
+            ->limit(5)
+            ->get();
 
         if ($materials->isEmpty()) {
             return $this->error('No material contents found', 404);
         }
 
-        return $this->success($materials, 'Latest material contents retrieved successfully');
+        return $this->success(
+            $materials,
+            'Latest material contents retrieved successfully'
+        );
     }
 
     public function index()
     {
-        $materials = MaterialContent::all();
+        $materials = MaterialContent::with([
+            'subModul:id,title,modul_id',
+            'subModul.modul:id,title',
+        ])->get();
 
         if ($materials->isEmpty()) {
             return $this->error('No material contents found', 404);
@@ -39,24 +51,41 @@ class MaterialContentController extends Controller
             return $this->error('Sub-module ID is required', 400);
         }
 
-        $materials = MaterialContent::where('sub_modul_id', $subModulId)->get();
+        $materials = MaterialContent::with([
+            'subModul:id,title,modul_id',
+            'subModul.modul:id,title',
+        ])
+            ->where('sub_modul_id', $subModulId)
+            ->get();
 
         if ($materials->isEmpty()) {
-            return $this->error('No material contents found for the specified sub-module', 404);
+            return $this->error(
+                'No material contents found for the specified sub-module',
+                404
+            );
         }
 
-        return $this->success($materials, 'Material contents for the specified sub-module retrieved successfully');
+        return $this->success(
+            $materials,
+            'Material contents for the specified sub-module retrieved successfully'
+        );
     }
 
     public function show($id)
     {
-        $material = MaterialContent::find($id);
+        $material = MaterialContent::with([
+            'subModul:id,title,modul_id',
+            'subModul.modul:id,title',
+        ])->find($id);
 
         if (!$material) {
             return $this->error('Material content not found', 404);
         }
 
-        return $this->success($material, 'Material content retrieved successfully');
+        return $this->success(
+            $material,
+            'Material content retrieved successfully'
+        );
     }
 
     public function store(CreateMaterialContentRequest $request)
