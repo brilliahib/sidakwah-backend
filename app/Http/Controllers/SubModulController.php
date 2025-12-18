@@ -12,7 +12,7 @@ class SubModulController extends Controller
 {
     public function index()
     {
-        $subModuls = SubModul::all();
+        $subModuls = SubModul::with('modul:id,title')->get();
 
         if ($subModuls->isEmpty()) {
             return $this->error('No sub-modules found', 404);
@@ -33,18 +33,23 @@ class SubModulController extends Controller
             return $this->error('Module not found', 404);
         }
 
-        $subModuls = SubModul::where('modul_id', $modulId)->get();
+        $subModuls = SubModul::with('modul:id,title')
+            ->where('modul_id', $modulId)
+            ->get();
 
         if ($subModuls->isEmpty()) {
             return $this->error('No sub-modules found for the specified module', 404);
         }
 
-        return $this->success($subModuls, 'Sub-modules for the specified module retrieved successfully');
+        return $this->success(
+            $subModuls,
+            'Sub-modules for the specified module retrieved successfully'
+        );
     }
 
     public function show($id)
     {
-        $subModul = SubModul::find($id);
+        $subModul = SubModul::with('modul:id,title')->find($id);
 
         if (!$subModul) {
             return $this->error('Sub-module not found', 404);
