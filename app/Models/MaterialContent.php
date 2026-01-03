@@ -19,4 +19,9 @@ class MaterialContent extends Model
     {
         return $this->belongsTo(SubModul::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
