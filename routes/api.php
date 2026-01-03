@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MaterialContentController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubModulController;
@@ -37,6 +38,14 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/latest', [MaterialContentController::class, 'getLatestMaterials']);
         Route::get('/sub-modul/{subModulId}', [MaterialContentController::class, 'getBySubModul']);
         Route::get('/{id}', [MaterialContentController::class, 'show']);
+    });
+
+    // Comment routes
+    Route::prefix('comments')->group(function () {
+        Route::post('/', [CommentController::class, 'store']);
+        Route::get('/material-content/{materialContentId}', [CommentController::class, 'indexByMaterialContent']);
+        Route::put('/{id}', [CommentController::class, 'update']);
+        Route::delete('/{id}', [CommentController::class, 'destroy']);
     });
 
     Route::middleware('role:admin')->group(function () {
