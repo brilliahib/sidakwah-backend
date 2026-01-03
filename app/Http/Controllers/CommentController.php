@@ -24,13 +24,15 @@ class CommentController extends Controller
 
     public function indexByMaterialContent($materialContentId)
     {
-        $comments = Comment::with(['user', 'replies.user'])
+        $comments = Comment::with(['user', 'replies'])
             ->where('material_content_id', $materialContentId)
             ->whereNull('parent_id')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return $this->success($comments, 'Comments retrieved successfully');
     }
+
 
     public function update(Request $request, $id)
     {
