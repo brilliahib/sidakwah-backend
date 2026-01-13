@@ -93,8 +93,8 @@ class UserController extends Controller
             return $this->error('User not found', 404);
         }
 
-        // Reset password to default '12345'
-        $user->password = Hash::make('12345');
+        // Reset password to default 'password12345'
+        $user->password = Hash::make('password12345');
         $user->save();
 
         return $this->success(null, 'Password reset successfully');
