@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         $users = User::query()
-            ->select(['id', 'name', 'email', 'username', 'profile_picture'])
+            ->select(['id', 'name', 'email', 'username', 'profile_picture', 'created_at'])
             ->get();
 
         if ($users->isEmpty()) {
