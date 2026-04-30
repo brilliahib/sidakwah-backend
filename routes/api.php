@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MaterialContentController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubModulController;
@@ -20,6 +21,11 @@ Route::middleware('auth:api')->group(function () {
     // Authenticated user routes
     Route::prefix('auth')->group(function () {
         Route::get('/get-auth', [AuthController::class, 'getAuth']);
+    });
+
+    // Dashboard route
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/summary', [DashboardController::class, 'getSummaryDashboard']);
     });
 
     // Module routes for users
