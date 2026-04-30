@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    public function findAll()
+    {
+        $comments = Comment::with([
+            'user:id,name,username',
+            'materialContent:id,title,sub_modul_id',
+            'materialContent.subModul:id,title,modul_id',
+            'materialContent.subModul.modul:id,title',
+        ])->get();
+
+        return $this->success($comments, 'Comments retrieved successfully');
+    }
+
     public function store(CreateCommentRequest $request)
     {
         $validated = $request->validated();

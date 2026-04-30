@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Comment routes
     Route::prefix('comments')->group(function () {
+        Route::get('/', [CommentController::class, 'findAll']);
         Route::post('/', [CommentController::class, 'store']);
         Route::get('/material-content/{materialContentId}', [CommentController::class, 'indexByMaterialContent']);
         Route::put('/{id}', [CommentController::class, 'update']);
