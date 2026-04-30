@@ -38,10 +38,6 @@ class MaterialContentController extends Controller
             'subModul.modul:id,title',
         ])->get();
 
-        if ($materials->isEmpty()) {
-            return $this->error('No material contents found', 404);
-        }
-
         return $this->success($materials, 'Material contents retrieved successfully');
     }
 
@@ -130,5 +126,25 @@ class MaterialContentController extends Controller
         $material->update($data);
 
         return $this->success($material->fresh(), 'Material content updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $material = MaterialContent::find($id);
+
+        if (!$material) {
+            return $this->error('Material content not found', 404);
+        }
+
+        if (
+            $material->article_images &&
+            Storage::disk('public')->exists($material->article_images)
+        ) {
+            Storage::disk('public')->delete($material->article_images);
+        }
+
+        $material->delete();
+
+        return $this->success(null, 'Material content deleted successfully');
     }
 }
