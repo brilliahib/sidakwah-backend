@@ -15,7 +15,9 @@ class CommentController extends Controller
             'materialContent:id,title,sub_modul_id',
             'materialContent.subModul:id,title,modul_id',
             'materialContent.subModul.modul:id,title',
-        ])->get();
+        ])
+            ->latest()
+            ->get();
 
         return $this->success($comments, 'Comments retrieved successfully');
     }
