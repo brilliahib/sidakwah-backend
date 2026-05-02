@@ -11,7 +11,7 @@ class CommentController extends Controller
     public function findAll()
     {
         $comments = Comment::with([
-            'user:id,name,username',
+            'user:id,name,username,profile_picture',
             'materialContent:id,title,sub_modul_id',
             'materialContent.subModul:id,title,modul_id',
             'materialContent.subModul.modul:id,title',
