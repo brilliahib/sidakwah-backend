@@ -21,6 +21,9 @@ Route::middleware('auth:api')->group(function () {
     // Authenticated user routes
     Route::prefix('auth')->group(function () {
         Route::get('/get-auth', [AuthController::class, 'getAuth']);
+        Route::put('/update-account', [AuthController::class, 'updateAccount']);
+        Route::put('/change-password', [AuthController::class, 'changePassword']);
+        Route::put('/update-profile-picture', [AuthController::class, 'changeProfilePicture']);
     });
 
     // Dashboard route
