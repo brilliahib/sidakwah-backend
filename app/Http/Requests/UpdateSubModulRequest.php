@@ -24,7 +24,7 @@ class UpdateSubModulRequest extends FormRequest
         return [
             'modul_id' => 'sometimes|required|exists:moduls,id',
             'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|nullable|string',
+            'description' => 'sometimes|nullable|string',
         ];
     }
 }
