@@ -22,9 +22,9 @@ class UpdateSubModulRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'modul_id' => 'sometimes|required|exists:moduls,id',
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|nullable|string',
+            'modul_id' => 'required|exists:moduls,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ];
     }
 }
