@@ -56,7 +56,7 @@ class CommentController extends Controller
             return $this->error('Comment not found', 404);
         }
 
-        if ($comment->user_id !== $request->user()->id) {
+        if ($comment->user_id !== $request->user()->id && $request->user()->role !== 'admin') {
             return $this->error('Unauthorized action.', 403);
         }
 
@@ -78,7 +78,7 @@ class CommentController extends Controller
             return $this->error('Comment not found', 404);
         }
 
-        if ($comment->user_id !== $request->user()->id) {
+        if ($comment->user_id !== $request->user()->id && $request->user()->role !== 'admin') {
             return $this->error('Unauthorized action.', 403);
         }
 
