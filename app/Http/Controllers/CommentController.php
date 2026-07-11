@@ -56,7 +56,9 @@ class CommentController extends Controller
             return $this->error('Comment not found', 404);
         }
 
-        $this->authorize('update', $comment);
+        if ($comment->user_id !== $request->user()->id) {
+            return $this->error('Unauthorized action.', 403);
+        }
 
         $request->validate([
             'content' => 'required|string|max:5000',
@@ -76,7 +78,9 @@ class CommentController extends Controller
             return $this->error('Comment not found', 404);
         }
 
-        $this->authorize('delete', $comment);
+        if ($comment->user_id !== $request->user()->id) {
+            return $this->error('Unauthorized action.', 403);
+        }
 
         $comment->delete();
 
