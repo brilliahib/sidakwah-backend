@@ -17,6 +17,7 @@ class CommentController extends Controller
             'materialContent.subModul.modul:id,title',
         ])
             ->visibleTo($request->user())
+            ->whereHas('materialContent', fn ($query) => $query->whereNotNull('published_at'))
             ->latest()
             ->get();
 
@@ -55,6 +56,7 @@ class CommentController extends Controller
         ])
             ->where('status', Comment::STATUS_APPROVED)
             ->where('material_content_id', $materialContentId)
+            ->whereHas('materialContent', fn ($query) => $query->whereNotNull('published_at'))
             ->whereNull('parent_id')
             ->orderBy('created_at', 'asc')
             ->get();
@@ -67,6 +69,7 @@ class CommentController extends Controller
         $comments = Comment::query()
             ->with('user:id,name,username,profile_picture')
             ->where('material_content_id', $materialContentId)
+            ->whereHas('materialContent', fn ($query) => $query->whereNotNull('published_at'))
             ->where('user_id', $request->user()->id)
             ->whereIn('status', [Comment::STATUS_PENDING, Comment::STATUS_REJECTED])
             ->latest()

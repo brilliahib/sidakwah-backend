@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         $users = User::query()
-            ->select(['id', 'name', 'email', 'username', 'profile_picture', 'created_at'])
+            ->select(['id', 'name', 'email', 'username', 'profile_picture', 'role', 'created_at'])
             ->get();
 
         if ($users->isEmpty()) {
@@ -68,6 +69,21 @@ class UserController extends Controller
         }
 
         return $this->success($user, 'User retrieved successfully');
+    }
+
+    public function update(UpdateUserRequest $request, $id): JsonResponse
+    {
+        $user = User::find($id);
+        if (! $user) {
+            return $this->error('User not found', 404);
+        }
+
+        $user->role = $request->validated()['role'];
+        $user->save();
+
+        return $this->success($user->only([
+            'id', 'name', 'email', 'username', 'phone_number', 'address', 'profile_picture', 'role',
+        ]), 'User role updated successfully');
     }
 
     /**

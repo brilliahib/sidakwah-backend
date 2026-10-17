@@ -14,7 +14,7 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string ...$roles)
     {
         $user = Auth::user();
 
@@ -32,7 +32,13 @@ class RoleMiddleware
             );
         }
 
-        if ($user->role !== $role) {
+        $allowedRoles = collect($roles)
+            ->flatMap(fn (string $role) => explode(',', $role))
+            ->map(fn (string $role) => trim($role))
+            ->filter()
+            ->all();
+
+        if (!in_array($user->role, $allowedRoles, true)) {
             return response()->json(
                 [
                     'meta' => [

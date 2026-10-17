@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $summary = [
             'modules' => Modul::count(),
             'sub_modules' => SubModul::count(),
-            'material_contents' => MaterialContent::count(),
+            'material_contents' => MaterialContent::published()->count(),
         ];
 
         return $this->success($summary, 'Dashboard summary retrieved successfully');

@@ -4,6 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MaterialContentController;
+use App\Http\Controllers\MaterialContentImageController;
+use App\Http\Controllers\MaterialContentManagementController;
+use App\Http\Controllers\MaterialContentReviewController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubModulController;
 use App\Http\Controllers\UserController;
@@ -41,6 +44,18 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('sub-modules')->group(function () {
         Route::get('/modul/{modulId}', [SubModulController::class, 'getSubModulesByModul']);
         Route::get('/{id}', [SubModulController::class, 'show']);
+    });
+
+    Route::middleware('role:admin,ustadz')->group(function () {
+        Route::get('/material-contents/management', [MaterialContentManagementController::class, 'index']);
+        Route::get('/material-contents/management/{id}', [MaterialContentManagementController::class, 'show']);
+        Route::get('/material-content-revisions/{revisionId}/image', [MaterialContentImageController::class, 'show']);
+    });
+
+    Route::middleware('role:ustadz')->group(function () {
+        Route::get('/material-content-revisions', [MaterialContentReviewController::class, 'index']);
+        Route::get('/material-content-revisions/{revisionId}', [MaterialContentReviewController::class, 'show']);
+        Route::patch('/material-content-revisions/{revisionId}/decision', [MaterialContentReviewController::class, 'decide']);
     });
 
     // Material content routes

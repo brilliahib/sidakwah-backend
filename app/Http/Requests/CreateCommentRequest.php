@@ -38,6 +38,9 @@ class CreateCommentRequest extends FormRequest
             }
 
             if (!$this->filled('parent_id')) {
+                if (! \App\Models\MaterialContent::published()->whereKey($this->input('material_content_id'))->exists()) {
+                    $validator->errors()->add('material_content_id', 'Diskusi hanya dapat dibuat pada materi yang sudah terbit.');
+                }
                 return;
             }
 
@@ -52,6 +55,10 @@ class CreateCommentRequest extends FormRequest
 
             if ($parent->status !== Comment::STATUS_APPROVED) {
                 $validator->errors()->add('parent_id', 'Balasan hanya dapat dibuat pada diskusi yang disetujui.');
+            }
+
+            if (! \App\Models\MaterialContent::published()->whereKey($this->input('material_content_id'))->exists()) {
+                $validator->errors()->add('material_content_id', 'Diskusi hanya dapat dibuat pada materi yang sudah terbit.');
             }
         });
     }

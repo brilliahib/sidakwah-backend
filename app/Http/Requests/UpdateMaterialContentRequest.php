@@ -27,6 +27,8 @@ class UpdateMaterialContentRequest extends FormRequest
             'article_title' => 'nullable|string',
             'article_content' => 'nullable|string',
             'article_images' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'sub_modul_id' => 'sometimes|required|exists:sub_moduls,id',
+            'action' => 'sometimes|required|in:save_draft,submit',
         ];
     }
 }
