@@ -54,6 +54,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('comments')->group(function () {
         Route::get('/', [CommentController::class, 'findAll']);
         Route::post('/', [CommentController::class, 'store']);
+        Route::get('/material-content/{materialContentId}/mine', [CommentController::class, 'myMaterialStatus']);
         Route::get('/material-content/{materialContentId}', [CommentController::class, 'indexByMaterialContent']);
         Route::put('/{id}', [CommentController::class, 'update']);
         Route::delete('/{id}', [CommentController::class, 'destroy']);
@@ -91,5 +92,7 @@ Route::middleware('auth:api')->group(function () {
             Route::put('/{id}', [MaterialContentController::class, 'update']);
             Route::delete('/{id}', [MaterialContentController::class, 'destroy']);
         });
+
+        Route::patch('/comments/{id}/moderation', [CommentController::class, 'moderate']);
     });
 });
